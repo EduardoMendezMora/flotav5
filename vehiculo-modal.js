@@ -350,7 +350,7 @@ class VehiculoModal {
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Arrendadora</label>
-                    <select class="form-select" name="arrendadora_id" data-cascade="apoderados">
+                    <select class="form-select" name="arrendadora_id" data-cascade="apoderados" onchange="window.vehiculoModal.showArrendadoraInfo(this.value)">
                         <option value="">Seleccionar arrendadora</option>
                         ${this.catalogData.arrendadoras.map(arrendadora => 
                             `<option value="${arrendadora.id}">${this.escapeHtml(arrendadora.nombre)}</option>`
@@ -358,10 +358,26 @@ class VehiculoModal {
                     </select>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Apoderado</label>
+                    <label class="form-label">Identificación Jurídica</label>
+                    <input type="text" class="form-control" name="identificacion_juridica" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Apoderado (Directo)</label>
+                    <input type="text" class="form-control" name="apoderado_directo" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Cédula Apoderado</label>
+                    <input type="text" class="form-control" name="cedula_apoderado" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Apoderado (Relacionado)</label>
                     <select class="form-select" name="apoderado_id">
                         <option value="">Seleccionar apoderado</option>
                     </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Identificación Apoderado</label>
+                    <input type="text" class="form-control" name="identificacion_apoderado" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Vendedor</label>
@@ -510,6 +526,39 @@ class VehiculoModal {
         }
     }
 
+    async showArrendadoraInfo(arrendadoraId) {
+        if (!arrendadoraId) {
+            // Limpiar campos si no hay arrendadora seleccionada
+            const form = document.getElementById('vehiculo-form');
+            if (form) {
+                form.querySelector('input[name="identificacion_juridica"]').value = '';
+                form.querySelector('input[name="apoderado_directo"]').value = '';
+                form.querySelector('input[name="cedula_apoderado"]').value = '';
+                form.querySelector('input[name="identificacion_apoderado"]').value = '';
+            }
+            return;
+        }
+
+        try {
+            // Buscar la arrendadora en los datos cargados
+            const arrendadora = this.catalogData.arrendadoras.find(a => a.id == arrendadoraId);
+            if (arrendadora) {
+                const form = document.getElementById('vehiculo-form');
+                if (form) {
+                    // Llenar campos de información de la arrendadora
+                    form.querySelector('input[name="identificacion_juridica"]').value = arrendadora.identificacion_juridica || '';
+                    form.querySelector('input[name="apoderado_directo"]').value = arrendadora.apoderado || '';
+                    form.querySelector('input[name="cedula_apoderado"]').value = arrendadora.cedula_apoderado || '';
+                }
+            }
+
+            // Actualizar apoderados relacionados
+            await this.updateApoderadosSelect(arrendadoraId);
+        } catch (error) {
+            console.error('Error mostrando información de arrendadora:', error);
+        }
+    }
+
     // ===== POBLAR FORMULARIO =====
     populateForm(vehicle) {
         const form = document.getElementById('vehiculo-form');
@@ -542,7 +591,8 @@ class VehiculoModal {
         const arrendadoraSelect = form.querySelector('select[name="arrendadora_id"]');
         if (arrendadoraSelect && vehicle.arrendadora_id) {
             arrendadoraSelect.value = vehicle.arrendadora_id;
-            this.updateApoderadosSelect(vehicle.arrendadora_id).then(() => {
+            // Mostrar información de la arrendadora
+            this.showArrendadoraInfo(vehicle.arrendadora_id).then(() => {
                 const apoderadoSelect = form.querySelector('select[name="apoderado_id"]');
                 if (apoderadoSelect && vehicle.apoderado_id) {
                     apoderadoSelect.value = vehicle.apoderado_id;

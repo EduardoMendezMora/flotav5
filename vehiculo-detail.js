@@ -401,7 +401,22 @@ class VehiculoDetail {
                     </select>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Apoderado</label>
+                    <label class="form-label">Identificación Jurídica</label>
+                    <div class="display-value" data-field="identificacion_juridica">${this.escapeHtml(v.arrendadoras?.identificacion_juridica || 'N/A')}</div>
+                    <input type="text" class="form-control d-none" name="identificacion_juridica" value="${v.arrendadoras?.identificacion_juridica || ''}" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Apoderado (Directo)</label>
+                    <div class="display-value" data-field="apoderado_directo">${this.escapeHtml(v.arrendadoras?.apoderado || 'N/A')}</div>
+                    <input type="text" class="form-control d-none" name="apoderado_directo" value="${v.arrendadoras?.apoderado || ''}" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Cédula Apoderado</label>
+                    <div class="display-value" data-field="cedula_apoderado">${this.escapeHtml(v.arrendadoras?.cedula_apoderado || 'N/A')}</div>
+                    <input type="text" class="form-control d-none" name="cedula_apoderado" value="${v.arrendadoras?.cedula_apoderado || ''}" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Apoderado (Relacionado)</label>
                     <div class="display-value" data-field="apoderado">${this.escapeHtml(v.apoderados?.nombre || 'N/A')}</div>
                     <select class="form-select d-none" name="apoderado_id">
                         <option value="">Seleccionar apoderado</option>
@@ -409,6 +424,11 @@ class VehiculoDetail {
                             `<option value="${apoderado.id}" ${v.apoderado_id == apoderado.id ? 'selected' : ''}>${this.escapeHtml(apoderado.nombre)}</option>`
                         ).join('')}
                     </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Identificación Apoderado</label>
+                    <div class="display-value" data-field="identificacion_apoderado">${this.escapeHtml(v.apoderados?.identificacion || 'N/A')}</div>
+                    <input type="text" class="form-control d-none" name="identificacion_apoderado" value="${v.apoderados?.identificacion || ''}" readonly>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Vendedor</label>
