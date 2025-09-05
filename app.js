@@ -301,7 +301,7 @@ class FlotaApp {
                         <option value="">Todas las marcas</option>
                     </select>
                 </div>
-                <button class="btn btn-primary" data-modal="vehiculo">
+                <button class="btn btn-primary" onclick="app.createVehiculo()">
                     <i class="fas fa-plus"></i> Agregar Vehículo
                 </button>
             </div>
@@ -780,7 +780,7 @@ class FlotaApp {
         try {
             switch (action) {
                 case 'edit-vehiculo':
-                    this.openModal('vehiculo', { id });
+                    this.editVehiculo(id);
                     break;
                 case 'view-vehiculo':
                     this.viewVehiculo(id);
@@ -1015,10 +1015,27 @@ class FlotaApp {
         };
     }
 
+    editVehiculo(id) {
+        // Abrir modal de edición de vehículo
+        if (window.vehiculoModal) {
+            window.vehiculoModal.showModal(id);
+        } else {
+            this.showToast('Modal de vehículos no disponible', 'error');
+        }
+    }
+
     viewVehiculo(id) {
-        // Implementar vista de vehículo
-        console.log(`Viendo vehículo: ${id}`);
-        this.showToast('Funcionalidad de vista de vehículo en desarrollo', 'info');
+        // Redirigir a página de detalle
+        window.location.href = `vehiculo-detail.html?id=${id}`;
+    }
+
+    createVehiculo() {
+        // Abrir modal de creación de vehículo
+        if (window.vehiculoModal) {
+            window.vehiculoModal.showModal();
+        } else {
+            this.showToast('Modal de vehículos no disponible', 'error');
+        }
     }
 }
 

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Vehículo - Flota v.3</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Flota v.3">
+    <meta name="theme-color" content="#0d6efd">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚗</text></svg>">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-car me-2"></i>
+                Flota v.3
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-tachometer-alt me-1"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html?section=vehiculos">
+                            <i class="fas fa-car me-1"></i>
+                            Vehículos
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <span class="navbar-text">
+                            <i class="fas fa-circle text-success me-1"></i>
+                            Conectado
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 id="page-title" class="h3 mb-0">
+                            <i class="fas fa-car me-2"></i>
+                            Detalle de Vehículo
+                        </h1>
+                        <p class="text-muted mb-0" id="vehicle-placa">Cargando...</p>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-outline-primary" id="edit-btn" onclick="toggleEditMode()">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-outline-success" id="save-btn" onclick="saveVehicle()" style="display: none;">
+                            <i class="fas fa-save"></i> Guardar
+                        </button>
+                        <button class="btn btn-outline-secondary" id="cancel-btn" onclick="cancelEdit()" style="display: none;">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                        <button class="btn btn-outline-danger" onclick="deleteVehicle()">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vehicle Content -->
+        <div id="vehicle-content">
+            <!-- Content will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3">
+        <!-- Toasts will be added here -->
+    </div>
+
+    <!-- Modal Container -->
+    <div id="modal-container" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Modal content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Configuration -->
+    <script src="config.js"></script>
+    
+    <!-- API Service -->
+    <script src="api.js"></script>
+    
+    <!-- Vehicle Detail Script -->
+    <script src="vehiculo-detail.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        // Registrar Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register('sw.js');
+                    console.log('✅ ServiceWorker registrado exitosamente:', registration.scope);
+                } catch (error) {
+                    console.error('❌ Error registrando ServiceWorker:', error);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
