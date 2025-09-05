@@ -5,7 +5,7 @@
 // Configuración de Supabase
 const SUPABASE_CONFIG = {
     url: 'https://yeavqyshoamtfgyyqlyb.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InllYXZxeXNob2FtdGZneXlxbHliIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM0NzQ4NzMsImV4cCI6MjAzOTA1MDg3M30.8K8vK8vK8vK8vK8vK8vK8vK8vK8vK8vK8vK8vK8vK8'
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InllYXZxeXNob2FtdGZneXlxbHliIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNTY3NjQsImV4cCI6MjA2OTkzMjc2NH0.RDkRmCYMTGgOkAnIakUR9LjlotSLstOJOuIXyNoKbFw'
 };
 
 // Configuración de la aplicación

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Conexión - Flota v.3</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .test-result {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0.375rem;
+            border-left: 4px solid;
+        }
+        .test-success {
+            background-color: #d1edff;
+            border-left-color: #0d6efd;
+            color: #0c5460;
+        }
+        .test-error {
+            background-color: #f8d7da;
+            border-left-color: #dc3545;
+            color: #721c24;
+        }
+        .test-warning {
+            background-color: #fff3cd;
+            border-left-color: #ffc107;
+            color: #856404;
+        }
+        .test-info {
+            background-color: #d4edda;
+            border-left-color: #198754;
+            color: #0f5132;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0d6efd;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4">
+                    <i class="fas fa-plug text-primary"></i>
+                    Test de Conexión - Flota v.3
+                </h1>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Estado de la Conexión</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="test-results">
+                            <div class="text-center">
+                                <div class="loading"></div>
+                                <p class="mt-2">Iniciando pruebas de conexión...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button class="btn btn-primary" onclick="runTests()">
+                                <i class="fas fa-refresh"></i> Ejecutar Pruebas
+                            </button>
+                            <button class="btn btn-success" onclick="openMainApp()">
+                                <i class="fas fa-external-link-alt"></i> Abrir Aplicación Principal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="api.js"></script>
+    
+    <script>
+        let testResults = [];
+        
+        function addTestResult(title, status, message, details = null) {
+            const result = {
+                title,
+                status, // 'success', 'error', 'warning', 'info'
+                message,
+                details,
+                timestamp: new Date().toLocaleTimeString()
+            };
+            testResults.push(result);
+            renderResults();
+        }
+        
+        function renderResults() {
+            const container = document.getElementById('test-results');
+            container.innerHTML = testResults.map(result => `
+                <div class="test-result test-${result.status}">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="mb-1">
+                                <i class="fas fa-${getStatusIcon(result.status)}"></i>
+                                ${result.title}
+                            </h6>
+                            <p class="mb-1">${result.message}</p>
+                            ${result.details ? `<small class="text-muted">${result.details}</small>` : ''}
+                        </div>
+                        <small class="text-muted">${result.timestamp}</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function getStatusIcon(status) {
+            const icons = {
+                'success': 'check-circle',
+                'error': 'times-circle',
+                'warning': 'exclamation-triangle',
+                'info': 'info-circle'
+            };
+            return icons[status] || 'question-circle';
+        }
+        
+        async function runTests() {
+            testResults = [];
+            addTestResult('Inicio', 'info', 'Iniciando pruebas de conexión...');
+            
+            // Test 1: Configuración
+            try {
+                if (typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey) {
+                    addTestResult(
+                        'Configuración', 
+                        'success', 
+                        'Configuración de Supabase encontrada',
+                        `URL: ${SUPABASE_CONFIG.url}`
+                    );
+                } else {
+                    addTestResult('Configuración', 'error', 'Configuración de Supabase no encontrada');
+                    return;
+                }
+            } catch (error) {
+                addTestResult('Configuración', 'error', 'Error cargando configuración', error.message);
+                return;
+            }
+            
+            // Test 2: API Service
+            try {
+                if (typeof api !== 'undefined') {
+                    addTestResult('API Service', 'success', 'Servicio de API cargado correctamente');
+                } else {
+                    addTestResult('API Service', 'error', 'Servicio de API no encontrado');
+                    return;
+                }
+            } catch (error) {
+                addTestResult('API Service', 'error', 'Error cargando API Service', error.message);
+                return;
+            }
+            
+            // Test 3: Conexión a Supabase
+            try {
+                addTestResult('Conexión', 'info', 'Probando conexión a Supabase...');
+                const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/marcas?select=*&limit=1`, {
+                    headers: {
+                        'apikey': SUPABASE_CONFIG.anonKey,
+                        'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addTestResult(
+                        'Conexión', 
+                        'success', 
+                        'Conexión a Supabase exitosa',
+                        `Respuesta recibida: ${Array.isArray(data) ? data.length : 'objeto'} elementos`
+                    );
+                } else {
+                    addTestResult('Conexión', 'error', `Error de conexión: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                addTestResult('Conexión', 'error', 'Error de conexión a Supabase', error.message);
+            }
+            
+            // Test 4: API Service - Marcas
+            try {
+                addTestResult('API Marcas', 'info', 'Probando API Service - Marcas...');
+                const marcasResp = await api.getMarcas();
+                
+                if (marcasResp.success) {
+                    addTestResult(
+                        'API Marcas', 
+                        'success', 
+                        `Marcas cargadas correctamente: ${marcasResp.data.length} registros`,
+                        `Primera marca: ${marcasResp.data[0]?.nombre || 'N/A'}`
+                    );
+                } else {
+                    addTestResult('API Marcas', 'error', 'Error cargando marcas', marcasResp.error);
+                }
+            } catch (error) {
+                addTestResult('API Marcas', 'error', 'Error en API Service - Marcas', error.message);
+            }
+            
+            // Test 5: API Service - Vehículos
+            try {
+                addTestResult('API Vehículos', 'info', 'Probando API Service - Vehículos...');
+                const vehiculosResp = await api.getVehiculos({ limit: 5 });
+                
+                if (vehiculosResp.success) {
+                    addTestResult(
+                        'API Vehículos', 
+                        'success', 
+                        `Vehículos cargados correctamente: ${vehiculosResp.data.length} registros`,
+                        vehiculosResp.data.length > 0 ? `Primer vehículo: ${vehiculosResp.data[0]?.placa || 'N/A'}` : 'No hay vehículos registrados'
+                    );
+                } else {
+                    addTestResult('API Vehículos', 'error', 'Error cargando vehículos', vehiculosResp.error);
+                }
+            } catch (error) {
+                addTestResult('API Vehículos', 'error', 'Error en API Service - Vehículos', error.message);
+            }
+            
+            // Test 6: API Service - Colaboradores
+            try {
+                addTestResult('API Colaboradores', 'info', 'Probando API Service - Colaboradores...');
+                const colaboradoresResp = await api.getColaboradores();
+                
+                if (colaboradoresResp.success) {
+                    addTestResult(
+                        'API Colaboradores', 
+                        'success', 
+                        `Colaboradores cargados correctamente: ${colaboradoresResp.data.length} registros`,
+                        colaboradoresResp.data.length > 0 ? `Primer colaborador: ${colaboradoresResp.data[0]?.nombre || 'N/A'}` : 'No hay colaboradores registrados'
+                    );
+                } else {
+                    addTestResult('API Colaboradores', 'error', 'Error cargando colaboradores', colaboradoresResp.error);
+                }
+            } catch (error) {
+                addTestResult('API Colaboradores', 'error', 'Error en API Service - Colaboradores', error.message);
+            }
+            
+            // Test 7: API Service - Tareas
+            try {
+                addTestResult('API Tareas', 'info', 'Probando API Service - Tareas...');
+                const tareasResp = await api.getTareas({ limit: 5 });
+                
+                if (tareasResp.success) {
+                    addTestResult(
+                        'API Tareas', 
+                        'success', 
+                        `Tareas cargadas correctamente: ${tareasResp.data.length} registros`,
+                        tareasResp.data.length > 0 ? `Primera tarea: ${tareasResp.data[0]?.titulo || 'N/A'}` : 'No hay tareas registradas'
+                    );
+                } else {
+                    addTestResult('API Tareas', 'error', 'Error cargando tareas', tareasResp.error);
+                }
+            } catch (error) {
+                addTestResult('API Tareas', 'error', 'Error en API Service - Tareas', error.message);
+            }
+            
+            // Test 8: Estadísticas
+            try {
+                addTestResult('Estadísticas', 'info', 'Probando API Service - Estadísticas...');
+                const statsResp = await api.getEstadisticas();
+                
+                if (statsResp.success) {
+                    addTestResult(
+                        'Estadísticas', 
+                        'success', 
+                        'Estadísticas calculadas correctamente',
+                        `Vehículos: ${statsResp.data.totalVehiculos}, Tareas: ${statsResp.data.totalTareas}, Colaboradores: ${statsResp.data.totalColaboradores}`
+                    );
+                } else {
+                    addTestResult('Estadísticas', 'error', 'Error calculando estadísticas', statsResp.error);
+                }
+            } catch (error) {
+                addTestResult('Estadísticas', 'error', 'Error en API Service - Estadísticas', error.message);
+            }
+            
+            // Resumen final
+            const successCount = testResults.filter(r => r.status === 'success').length;
+            const errorCount = testResults.filter(r => r.status === 'error').length;
+            const totalTests = testResults.length - 1; // Excluir el test de inicio
+            
+            if (errorCount === 0) {
+                addTestResult(
+                    'Resumen Final', 
+                    'success', 
+                    `¡Todas las pruebas pasaron! (${successCount}/${totalTests})`,
+                    'El sistema está listo para usar'
+                );
+            } else {
+                addTestResult(
+                    'Resumen Final', 
+                    'warning', 
+                    `Pruebas completadas: ${successCount} exitosas, ${errorCount} con errores`,
+                    'Revisa los errores antes de continuar'
+                );
+            }
+        }
+        
+        function openMainApp() {
+            window.open('index.html', '_blank');
+        }
+        
+        // Ejecutar pruebas automáticamente al cargar
+        window.addEventListener('load', () => {
+            setTimeout(runTests, 1000);
+        });
+    </script>
+</body>
+</html>
