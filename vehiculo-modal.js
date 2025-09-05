@@ -579,11 +579,14 @@ class VehiculoModal {
                 // Cerrar modal
                 this.modal.hide();
                 
-                // Recargar la página o actualizar la lista
+                // Actualizar la lista de vehículos
                 if (window.app && window.app.loadVehiculos) {
-                    window.app.loadVehiculos();
-                } else {
-                    window.location.reload();
+                    await window.app.loadVehiculos();
+                }
+                
+                // Si estamos en la página de detalle, recargar los datos
+                if (window.vehiculoDetail && this.isEditMode) {
+                    await window.vehiculoDetail.refreshVehicleData();
                 }
             } else {
                 this.showToast('Error guardando vehículo: ' + result.error, 'error');

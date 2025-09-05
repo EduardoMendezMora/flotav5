@@ -71,6 +71,21 @@ class VehiculoDetail {
         }
     }
 
+    async refreshVehicleData() {
+        // Método específico para refrescar solo los datos del vehículo
+        try {
+            const vehicle = await this.loadVehicle();
+            if (vehicle) {
+                this.currentVehicle = vehicle;
+                this.originalData = JSON.parse(JSON.stringify(vehicle));
+                this.renderVehicleDetail();
+                this.updatePageTitle();
+            }
+        } catch (error) {
+            console.error('Error refrescando datos del vehículo:', error);
+        }
+    }
+
     async loadVehicle() {
         try {
             const vehicle = await api.getVehiculo(this.vehicleId);
@@ -564,15 +579,11 @@ class VehiculoDetail {
             if (result.success) {
                 this.showToast('Vehículo actualizado exitosamente', 'success');
                 
-                // Actualizar datos locales
-                this.currentVehicle = { ...this.currentVehicle, ...formData };
-                this.originalData = JSON.parse(JSON.stringify(this.currentVehicle));
+                // Recargar datos del vehículo desde la API
+                await this.refreshVehicleData();
                 
                 // Salir del modo de edición
                 this.cancelEdit();
-                
-                // Actualizar título de página
-                this.updatePageTitle();
             } else {
                 this.showToast('Error actualizando vehículo: ' + result.error, 'error');
             }
