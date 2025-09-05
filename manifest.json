@@ -1,0 +1,106 @@
+{
+  "name": "Flota v.3 - Sistema de Gestión Vehicular",
+  "short_name": "Flota v.3",
+  "description": "Sistema completo de gestión de flota vehicular con control de tareas y colaboradores",
+  "version": "3.0.0",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0d6efd",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "es",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230d6efd' rx='20'/><text y='.7em' font-size='60' text-anchor='middle' x='50' fill='white'>🚗</text></svg>",
+      "sizes": "72x72",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230d6efd' rx='20'/><text y='.7em' font-size='60' text-anchor='middle' x='50' fill='white'>🚗</text></svg>",
+      "sizes": "96x96",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230d6efd' rx='20'/><text y='.7em' font-size='60' text-anchor='middle' x='50' fill='white'>🚗</text></svg>",
+      "sizes": "128x128",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230d6efd' rx='20'/><text y='.7em' font-size='60' text-anchor='middle' x='50' fill='white'>🚗</text></svg>",
+      "sizes": "144x144",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230d6efd' rx='20'/><text y='.7em' font-size='60' text-anchor='middle' x='50' fill='white'>🚗</text></svg>",
+      "sizes": "152x152",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230d6efd' rx='20'/><text y='.7em' font-size='60' text-anchor='middle' x='50' fill='white'>🚗</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230d6efd' rx='20'/><text y='.7em' font-size='60' text-anchor='middle' x='50' fill='white'>🚗</text></svg>",
+      "sizes": "384x384",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230d6efd' rx='20'/><text y='.7em' font-size='60' text-anchor='middle' x='50' fill='white'>🚗</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Vehículos",
+      "short_name": "Vehículos",
+      "description": "Ver lista de vehículos",
+      "url": "/?section=vehiculos",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230d6efd'><path d='M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z'/></svg>",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Tareas",
+      "short_name": "Tareas",
+      "description": "Ver lista de tareas",
+      "url": "/?section=tareas",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230d6efd'><path d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z'/></svg>",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><rect width='800' height='600' fill='%23f8f9fa'/><text y='.5em' font-size='48' text-anchor='middle' x='400' fill='%230d6efd'>Flota v.3 Dashboard</text></svg>",
+      "sizes": "800x600",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
+}
